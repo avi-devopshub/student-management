@@ -19,7 +19,12 @@ pipeline{
 		}
 		stage('mvn-build'){
 			steps{
-				sh 'mvn clean package'
+				
+				sh '''
+				   java --verion
+				   mvn --version
+				   mvn clean package
+				   '''
 			}
 			post{
 				success{
