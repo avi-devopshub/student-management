@@ -48,7 +48,7 @@ pipeline{
                     repository: 'maven-releases',
                     credentialsId: 'nexus-credentials',
                     groupId: 'com.example',
-                    version: '1.0.0',
+                    version: "${BUILD_NUMBER}.0",
                     artifacts: [
                         [
                             artifactId: 'student-management',
