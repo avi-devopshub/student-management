@@ -2,6 +2,9 @@ pipeline{
 	agent{
 		label 'worker'
 	}
+	tools{
+		maven 'maven'
+	}
 	stages{
 		stage('checkout'){
 			steps{
@@ -13,7 +16,7 @@ pipeline{
 				}
 			}
 		}
-		stage('mvn-build'){
+		stage(mvn-build){
 			steps{
 				sh 'mvn clean package'
 			}
