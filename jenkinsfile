@@ -1,0 +1,27 @@
+pipeline{
+	agent{
+		label 'worker'
+	}
+	stages{
+		stage('checkout'){
+			steps{
+				git 'https://github.com/avi-devopshub/student-management.git'
+			}
+			post{
+				success{
+					echo "checkout has been completed"
+				}
+			}
+		}
+		stage('mvn-build'){
+			steps{
+				sh 'mvn clean package'
+			}
+			post{
+				success{
+					archieveArtifacts artifacts: '*/target/*.war', fingerprint: true
+				}
+			}
+		}
+	}
+}
