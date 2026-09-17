@@ -53,7 +53,7 @@ pipeline{
                         [
                             artifactId: 'student-management',
                             classifier: '',
-                            file: 'target/student-management.war.war',
+                            file: 'target/student-management.war',
                             type: 'war'
                 ]
             ]
