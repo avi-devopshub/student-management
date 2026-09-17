@@ -39,5 +39,26 @@ pipeline{
 			sh 'aws s3 cp target/*.war s3://artifactory-554663574879-ap-south-2-an/artifacts/student.war'
 			}
 		}
-	}
+        stage('Upload Artifact to Nexus') {
+            steps {
+                nexusArtifactUploader(
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    nexusUrl: '18.61.85.39:8081',
+                    repository: 'maven-releases',
+                    credentialsId: 'nexus-credentials',
+                    groupId: 'com.example',
+                    version: '1.0.0',
+                    artifacts: [
+                        [
+                            artifactId: 'student-management',
+                            classifier: '',
+                            file: 'target/student-management.war.war',
+                            type: 'war'
+                ]
+            ]
+        )
+     }
+        }
+    }
 }
