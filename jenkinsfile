@@ -32,7 +32,9 @@ pipeline{
 			}
 		}
 		stage('artifact to s3'){
+			steps{
 			sh 'aws s3 cp target/*.war s3://artifactory-554663574879-ap-south-2-an/artifacts/student.war'
+			}
 		}
 	}
 }
