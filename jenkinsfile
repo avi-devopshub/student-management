@@ -4,7 +4,6 @@ pipeline{
 	}
 	tools{
 		maven 'maven'
-		jdk 'jdk-17'
 	}
 	stages{
 		stage('checkout'){
@@ -21,7 +20,7 @@ pipeline{
 			steps{
 				
 				sh '''
-				   java --version
+				   java --verion
 				   mvn --version
 				   mvn clean package
 				   '''
@@ -31,6 +30,9 @@ pipeline{
 					archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
 				}
 			}
+		}
+		stage('artifact to s3'){
+			sh 'aws s3 cp target/*.war s3://artifactory-554663574879-ap-south-2-an/artifacts/student.war'
 		}
 	}
 }
