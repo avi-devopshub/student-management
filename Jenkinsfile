@@ -12,16 +12,19 @@ pipeline{
 		stage('checkout'){
 			steps{
 				git 'https://github.com/avi-devopshub/student-management.git'
+                echo "checkout is successful..."
 			}
 		}
 		stage('maven-build'){
 			steps{
 				sh 'mvn clean package'
+                echo "build is successful..."
 			}
 		}
 		stage('artifact-to-s3'){
 			steps{
 				sh 'aws s3 cp target/*.war s3://artifactory-554663574879-ap-south-1-an/artifact/student.war'
+                echo "pushed an artifact to s3"
 			}
 		}
 	}
