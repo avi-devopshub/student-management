@@ -18,7 +18,11 @@ pipeline{
 		stage('maven-build'){
 			steps{
 				sh 'mvn clean package'
-                echo "build is successful..."
+			}
+			post{
+				success{
+					echo "build is successful..."
+				}
 			}
 		}
 		stage('artifact-to-s3'){
