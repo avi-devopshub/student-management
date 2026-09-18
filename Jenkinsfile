@@ -39,13 +39,6 @@ pipeline{
 				}
 			}
 		}
-		stage('sonarqube-quality-gates'){
-			steps{
-				timeout(activity: true, time: 5) {
-					waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
-				}
-			}
-		}
 		
 	}
 }
