@@ -32,5 +32,20 @@ pipeline{
                 echo "pushed an artifact to s3"
 			}
 		}
+		stage('sonarqube-analysis'){
+			steps{
+				withSonarQubeEnv(credentialsId: 'sonar') {
+					sh 'mvn sonar:sonar'
+				}
+			}
+		}
+		stage('sonarqube-quality-gates'){
+			steps{
+				timeout(activity: true, time: 5) {
+					waitForQualityGate abortPipeline: false, credentialsId: 'sonar'
+				}
+			}
+		}
+		
 	}
 }
