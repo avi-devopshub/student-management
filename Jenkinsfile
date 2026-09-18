@@ -21,6 +21,7 @@ pipeline{
 			}
 			post{
 				success{
+                    archiveArtifacts artifacts: 'student.war', followSymlinks: false
 					echo "build is successful..."
 				}
 			}
