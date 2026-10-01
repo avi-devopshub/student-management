@@ -1,0 +1,56 @@
+name: ci-application
+on:
+  push:
+    branches:
+      - master
+jobs:
+  ci-application:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v7
+
+      - name: java-env-setup
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      
+      - name: maven-build
+        run: mvn clean package
+
+      - name: aws-credentials-setup
+        uses:  aws-actions/configure-aws-credentials@v6.3.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: sonarqube-scan
+        uses: SonarSource/sonarqube-scan-action@v4.1.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }} # or https://sonarcloud.io
+
+      - name: soanrqube-quality-gate
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+    
+
+      - name: artifact-to-s3
+        run: aws s3 cp target/*.war s3://avidevops.fun/new-student-artifacts/student.war
+
+      - name: docker-image-build
+        run: |
+          docker build -t student .
+          docker images
+
+      - name: push-to-ecr
+        run: |
+          aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 554663574879.dkr.ecr.ap-south-1.amazonaws.com
+          docker tag student:latest 554663574879.dkr.ecr.ap-south-1.amazonaws.com/student:${{ github.sha }}
+          docker push 554663574879.dkr.ecr.ap-south-1.amazonaws.com/student:${{ github.sha }}
