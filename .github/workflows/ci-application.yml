@@ -67,6 +67,6 @@ jobs:
       - name: image-update
         run: |
           sed -i 's|image: .*|554663574879.dkr.ecr.ap-south-1.amazonaws.com/student:${{ github.sha }}|' k8s/deployment.yaml
-          git add deployment.yaml
+          git add .
           git commit -m "image updated"
           git push origin master
