@@ -69,6 +69,6 @@ jobs:
           sed -i 's|image: .*|554663574879.dkr.ecr.ap-south-1.amazonaws.com/student:${{ github.sha }}|' k8s/deployment.yaml
           git add .
           git commit -m "image updated"
-          git config --global user.name "Sr.Devops Avinash"
+          git config --global user.name "avi-devopshub"
           git config --global user.email "avi.mk1998@gmail.com"
           git push origin master
