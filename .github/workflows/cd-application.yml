@@ -21,7 +21,7 @@ jobs:
          run: aws eks update-kubeconfig --name student-cluster --region ap-south-1
 
        - name: kubernets-files-apply
-         run: kubectl apply -f k8s/
+         run: kubectl apply -f k8s
 
           
   
