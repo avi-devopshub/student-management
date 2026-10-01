@@ -28,15 +28,15 @@ jobs:
           aws-region: ap-south-1
 
       - name: sonarqube-scan
-        uses: SonarSource/sonarqube-scan-action@v6
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # or https://sonarcloud.io
-        with:
-          args: >
-            -Dsonar.projectKey=student-management
-            -Dsonar.projectName=student-management
-            -Dsonar.sources=src
+        run: |
+          mvn clean verify sonar:sonar \
+          -Dsonar.projectKey=student-management \
+          -Dsonar.projectName=student-management \
+          -Dsonar.host.url=$SONAR_HOST_URL \
+          -Dsonar.token=$SONAR_TOKEN
 
       - name: soanrqube-quality-gate
         id: sonarqube-quality-gate-check
