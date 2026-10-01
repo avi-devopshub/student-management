@@ -10,6 +10,7 @@ terraform {
     }
   }
 
+ #backend s3
   backend "s3" {
     bucket       = "avidevops.fun"
     key          = "terraform.tfstate"
