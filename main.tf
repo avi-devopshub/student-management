@@ -11,15 +11,15 @@ terraform {
   }
 
   backend "s3" {
-    bucket       = "mayur.comm"
-    key          = "student-management/eks/terraform.tfstate"
-    region       = "us-west-2"
+    bucket       = "avidevops.fun"
+    key          = "terraform.tfstate"
+    region       = "ap-south-1"
     use_lockfile = true
   }
 }
 
 provider "aws" {
-  region = "us-west-2"
+  region = "ap-south-1"
 }
 
 # Fetch default VPC
@@ -30,7 +30,7 @@ data "aws_vpc" "default" {
 # Variable for cluster name
 variable "cluster_name" {
   type    = string
-  default = "eks-cluster-mayur"
+  default = "student-cluster"
 }
 
 # Fetch all subnets in the default VPC
@@ -121,7 +121,7 @@ resource "aws_eks_node_group" "nodegroup" {
   node_role_arn   = aws_iam_role.node_role.arn
   subnet_ids      = data.aws_subnets.default.ids
 
-  instance_types = ["c7i-flex.large"]
+  instance_types = ["t3.medium"]
 
   scaling_config {
     desired_size = 1

@@ -1,0 +1,29 @@
+name: student-infra
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'main.tf'
+jobs:
+  student-infra:
+    runs-on: ubuntu-latest
+    steps:
+      - name: aws-credentials-setup
+        uses:  aws-actions/configure-aws-credentials@v6.3.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: checkout
+        uses: actions/checkout@v7
+        
+      - name: terraform-init
+        run: terraform init
+
+      - name: terraform-validate
+        run: terraform validate
+
+      - name: terraform-apply
+        run: terraform apply --auto-approve
