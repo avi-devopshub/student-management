@@ -9,6 +9,13 @@ jobs:
   student-infra:
     runs-on: ubuntu-latest
     steps:
+
+      
+      - name: terraform-setup
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.14.6"
+
       - name: aws-credentials-setup
         uses:  aws-actions/configure-aws-credentials@v6.3.0
         with:
