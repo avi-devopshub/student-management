@@ -32,19 +32,20 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # or https://sonarcloud.io
         run: |
-          mvn clean verify sonar:sonar \
-          -Dsonar.projectKey=student-management \
-          -Dsonar.projectName=student-management \
+          mvn sonar:sonar \
           -Dsonar.host.url=$SONAR_HOST_URL \
           -Dsonar.token=$SONAR_TOKEN
 
       - name: soanrqube-quality-gate
-        id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-    
+        run: |
+          STATUS=$(curl -s \
+            -u "$SONAR_TOKEN:" \
+            "$SONAR_HOST_URL/api/qualitygates/project_status?projectKey=student-management" \
+            | jq -r '.projectStatus.status')
+          echo "SonarQube Quality Gate: $STATUS"
+
+          echo "Quality Gate: $STATUS"
+          [ "$STATUS" = "OK" ] || exit 1
 
       - name: artifact-to-s3
         run: aws s3 cp target/*.war s3://avidevops.fun/new-student-artifacts/student.war
