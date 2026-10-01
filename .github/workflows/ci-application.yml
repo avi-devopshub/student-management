@@ -37,6 +37,9 @@ jobs:
           -Dsonar.token=$SONAR_TOKEN
 
       - name: soanrqube-quality-gate
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # or https://sonarcloud.io
         run: |
           STATUS=$(curl -s \
             -u "$SONAR_TOKEN:" \
