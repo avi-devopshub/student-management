@@ -34,8 +34,8 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # or https://sonarcloud.io
         with:
           args: >
-            -Dsonar.projectKey=student
-            -Dsonar.projectName=student
+            -Dsonar.projectKey=student-management
+            -Dsonar.projectName=student-management
             -Dsonar.sources=src
 
       - name: soanrqube-quality-gate
