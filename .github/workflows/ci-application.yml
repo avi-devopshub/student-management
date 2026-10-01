@@ -67,8 +67,8 @@ jobs:
       - name: image-update
         run: |
           sed -i 's|image: .*|554663574879.dkr.ecr.ap-south-1.amazonaws.com/student:${{ github.sha }}|' k8s/deployment.yaml
+          git config --global user.name "Sr. Devops Engineer Avinash"
+          git config --global user.email "avi.mk1998@gmail.com"
           git add .
           git commit -m "image updated"
-          git config --global user.name "avi-devopshub"
-          git config --global user.email "avi.mk1998@gmail.com"
           git push origin master
