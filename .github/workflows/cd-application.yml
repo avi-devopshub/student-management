@@ -1,12 +1,13 @@
 name:  cd-application
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'k8s/deployment.yaml'
+  workflow_run:
+    workflows:
+      - ci-application
+    types:
+      - completed
 jobs:
   cd-application:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
        - name: aws-credentials-setup
