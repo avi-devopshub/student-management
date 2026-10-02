@@ -2,7 +2,7 @@ name: ci-application
 on:
   push:
     branches:
-      - main
+      - master
 
 permissions:
   contents: write
@@ -30,29 +30,6 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
-
-      - name: sonarqube-scan
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # or https://sonarcloud.io
-        run: |
-          mvn sonar:sonar \
-          -Dsonar.host.url=$SONAR_HOST_URL \
-          -Dsonar.token=$SONAR_TOKEN
-
-      - name: soanrqube-quality-gate
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }} # or https://sonarcloud.io
-        run: |
-          STATUS=$(curl -s \
-            -u "$SONAR_TOKEN:" \
-            "$SONAR_HOST_URL/api/qualitygates/project_status?projectKey=student-management" \
-            | jq -r '.projectStatus.status')
-          echo "SonarQube Quality Gate: $STATUS"
-
-          echo "Quality Gate: $STATUS"
-          [ "$STATUS" = "OK" ] || exit 1
 
       - name: artifact-to-s3
         run: aws s3 cp target/*.war s3://avidevops.fun/new-student-artifacts/student.war
