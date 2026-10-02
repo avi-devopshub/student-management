@@ -2,7 +2,7 @@ name: ci-application
 on:
   push:
     branches:
-      - master
+      - main
 
 permissions:
   contents: write
