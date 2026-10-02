@@ -2,7 +2,7 @@ name:  cd-application
 on:
   workflow_run:
     workflows:
-      - ci-application
+      - ci
     types:
       - completed
 jobs:
